@@ -118,6 +118,7 @@ alias -s flv="vlc"
 ## custom aliases
 alias s="tracker search --limit=10000 "
 alias g="git status "
+alias gl="git ls-tree --full-tree -r HEAD "
 
 # Functions
 
