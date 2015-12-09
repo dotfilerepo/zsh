@@ -27,21 +27,27 @@ export TERM=rxvt
 setopt HIST_IGNORE_DUPS
 
 # PROMPT
+source ~/Dotfiles/zsh/git_prompt.zsh
+
 setopt PROMPT_SUBST
 autoload -U colors && colors
 
-PCOLOR1=blue
+PCOLOR1=red
 PCOLOR2=red
 PCOLOR3=white
 
-PS1="%{$fg[$PCOLOR1]%}(\
+PROMPT="%{$fg[$PCOLOR1]%}(\
 %{$fg[$PCOLOR2]%}%n@%m\
 %{$fg[$PCOLOR1]%})-(\
 %{$fg[$PCOLOR2]%}%~\
 %{$fg[$PCOLOR1]%})-(\
 %{$fg[$PCOLOR2]%}%*\
-%{$fg[$PCOLOR1]%})
+%{$fg[$PCOLOR1]%})\
+$(git_prompt_string)
 %{$fg[$PCOLOR3]%}$ "
+
+RPROMPT=''
+
 
 # AUTOCOMPLETION
 ## Load the modules
@@ -106,6 +112,8 @@ alias -s hpp="vim"
 alias -s c="vim"
 alias -s h="vim"
 alias -s hs="vim"
+alias -s ml="vim"
+alias -s mli="vim"
 alias -s pdf="evince"
 alias -s dvi="evince"
 alias -s html="cr"
@@ -114,11 +122,27 @@ alias -s mp4="vlc"
 alias -s mpg="vlc"
 alias -s avi="vlc"
 alias -s flv="vlc"
+alias -s svg="chromium-browser"
+
+hash -d dat="$HOME/Data/"
+hash -d doc="$HOME/Data/Documents"
+hash -d pri="$HOME/Data/ProjIncubator"
+hash -d pre="$HOME/Data/ProjExperimental"
+hash -d prm="$HOME/Data/ProjMature"
+hash -d papers="$HOME/Data/Papers"
+hash -d books="$HOME/Data/Books"
+hash -d uni="$HOME/Data/Uni"
 
 ## custom aliases
 alias s="tracker search --limit=10000 "
 alias g="git status "
 alias gl="git ls-tree --full-tree -r HEAD "
+alias ta="task "
+alias tai="task rc:~/Dotfiles/taskwarrior/taskirc "
+alias tal="task rc:~/Dotfiles/taskwarrior/tasklrc "
+alias tap="task rc:~/Dotfiles/taskwarrior/taskprc "
+alias br="chromium-browser "
+alias ocaml="ledit ocaml "
 
 # Functions
 
@@ -131,3 +155,15 @@ let c() {
 	    cd "$1" && ls -l;
     fi
 }
+
+let v() {
+	if [ "$(pidof gvim)" ];
+	then 
+		gvim --remote "$@";
+	else 
+		gvim "$@";
+	fi
+}
+
+# OPAM configuration
+. /home/jules/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
